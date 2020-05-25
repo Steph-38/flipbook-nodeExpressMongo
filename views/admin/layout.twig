@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/admin.css' />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico"/>
+    <script src="/javascripts/jquery.slim.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+  </head>
+  <body class="admin">
+    {% block body %}{% endblock %}
+  </body>
+  {% block javascript %}{% endblock %}
+</html>

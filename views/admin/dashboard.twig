@@ -1,0 +1,133 @@
+{% extends 'admin/layout.twig' %}
+
+{% block body %}
+    <nav>
+        <a href="/">
+            <img src="https://www.it-akademy.fr/img/xit-akademy-logo.png.pagespeed.ic.j4B-WGIq2B.png" alt="it-akademy"/>
+        </a>
+        <ul>
+            <li id="userName">Bienvenue {{ session.user.userName | default('Machin Bidule') }}</li>
+            <li id="logout">Déconnexion</li>
+        </ul>
+    </nav>
+    <p class="text-right sticked">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#newFlipbook">
+            <svg class="bi bi-plus-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M16 8A8 8 0 110 8a8 8 0 0116 0zM8.5 4a.5.5 0 00-1 0v3.5H4a.5.5 0 000 1h3.5V12a.5.5 0 001 0V8.5H12a.5.5 0 000-1H8.5V4z"
+                      clip-rule="evenodd"/>
+            </svg>
+            Nouveau FlipBook
+        </button>
+    </p>
+    <h1>{{ title }}</h1>
+    <main class="books">
+        {% for book in books %}
+            <div class="book">
+                <div>
+                    <div class="cover">
+                        <img src="{{ book.cover | default('/images/defaultBook.jpg') }}" />
+                    </div>
+                    <div class="menu">
+                        <span class="badge badge-{{ book.status == 'published' ? 'success' : (book.status == 'draft' ? 'danger' : 'warning') }}">&nbsp;</span>
+                        <button class="btn btn-link text-info" onclick="editFlipbook('{{ book._id }}')">
+                            <svg class="bi bi-pencil-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15.502 1.94a.5.5 0 010 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 01.707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 00-.121.196l-.805 2.414a.25.25 0 00.316.316l2.414-.805a.5.5 0 00.196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5v-6a.5.5 0 00-1 0v6a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5H9a.5.5 0 000-1H2.5A1.5 1.5 0 001 2.5v11z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                        <button class="btn btn-link text-danger" onclick="deleteFlipbook('{{ book._id }}')">
+                            <svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 00-1 1v1a1 1 0 001 1H3v9a2 2 0 002 2h6a2 2 0 002-2V4h.5a1 1 0 001-1V2a1 1 0 00-1-1H10a1 1 0 00-1-1H7a1 1 0 00-1 1H2.5zm3 4a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7a.5.5 0 01.5-.5zM8 5a.5.5 0 01.5.5v7a.5.5 0 01-1 0v-7A.5.5 0 018 5zm3 .5a.5.5 0 00-1 0v7a.5.5 0 001 0v-7z" clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <h3 class="justify-content-center">{{ book.name }}</h3>
+                <h5 class="text-center">{{ book.pages | length | default('0')}} pages</h5>
+                <div class="justify-content-center stats text-success">{{ book.nbViews | default('0') }}</div>
+                <div class="justify-content-center text-success">Vues</div>
+            </div>
+        {% endfor %}
+    </main>
+    <div class="modal fade" id="newFlipbook" tabindex="-1" role="dialog" aria-labelledby="newFlipbookLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newFlipbookLabel">Nouveau Flipbook</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin" method="post" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Nom du livre</label>
+                            <input type="text" class="form-control" id="name" name="name" required pattern=".{4,}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Résumé</label>
+                            <textarea name="description" id="description" class="form-control" row="4" required
+                                      pattern=".{4,}"></textarea>
+                        </div>
+                        <div class="d-flex flex-row align-content-between">
+                            <label class="uploadFile d-flex" for="file">Fichier PDF</label>
+                            <input type="file" accept="application/pdf" name="file" id="file" required/>
+                            <label class="uploadFile d-flex justify-content-end" for="file">
+                                <svg class="bi bi-upload" width="1em" height="1em" viewBox="0 0 16 16"
+                                     fill="currentColor"
+                                     xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M.5 8a.5.5 0 01.5.5V12a1 1 0 001 1h12a1 1 0 001-1V8.5a.5.5 0 011 0V12a2 2 0 01-2 2H2a2 2 0 01-2-2V8.5A.5.5 0 01.5 8zM5 4.854a.5.5 0 00.707 0L8 2.56l2.293 2.293A.5.5 0 1011 4.146L8.354 1.5a.5.5 0 00-.708 0L5 4.146a.5.5 0 000 .708z"
+                                          clip-rule="evenodd"/>
+                                    <path fill-rule="evenodd" d="M8 2a.5.5 0 01.5.5v8a.5.5 0 01-1 0v-8A.5.5 0 018 2z"
+                                          clip-rule="evenodd"/>
+                                </svg>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Créer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateFlipbook" tabindex="-1" role="dialog" aria-labelledby="updateFlipbookLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateFlipbookLabel">Mise à jour du FlipBook</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="/admin" method="post" enctype="multipart/form-data" onsubmit="flipbookEdition(event)">
+                    <input type="hidden" name="id" required />
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="name">Nom du livre</label>
+                            <input type="text" class="form-control" id="name" name="name" required pattern=".{4,}"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Résumé</label>
+                            <textarea name="description" id="description" class="form-control" row="4" required
+                                      pattern=".{4,}"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+<script src="/javascripts/admin.js"></script>
+{% endblock %}

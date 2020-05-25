@@ -1,0 +1,82 @@
+{% extends 'admin/layout.twig' %}
+
+{% block body %}
+    <main>
+        <form action="/users">
+            <div class="text-center">
+                <img src="https://www.it-akademy.fr/img/xit-akademy-logo.png.pagespeed.ic.j4B-WGIq2B.png"
+                     alt="it-akademy"/>
+            </div>
+            <div class="login">
+                <h1>Connectez-vous</h1>
+                <div class="form-group">
+                    <label for="login_email">Email address</label>
+                    <input type="email" class="form-control" id="login_email" name="email"
+                           aria-describedby="login_email_help">
+                    <small id="login_email_help" class="form-text text-muted">Merci de renseigner lm'adresse email
+                        utilisée pôur la création de votre compte.</small>
+                </div>
+                <div class="form-group">
+                    <label for="login_password">Mot de passe</label>
+                    <input type="password" class="form-control" id="login_password" name="password">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Connexion</button>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-link"
+                            onclick="this.parentElement.parentElement.parentElement.classList.toggle('creation')">Créer
+                        mon compte
+                        <svg class="bi bi-chevron-right" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="create">
+                <h1>Création de votre compte</h1>
+                <div class="form-group">
+                    <label for="create_username">Prénom Nom</label>
+                    <input type="text" class="form-control" id="create_username" name="username">
+                </div>
+                <div class="form-group">
+                    <label for="create_email">Email address</label>
+                    <input type="email" class="form-control" id="create_email" name="email"
+                           aria-describedby="create_email_help">
+                    <small id="create_email_help" class="form-text text-muted">Merci de renseigner lm'adresse email
+                        utilisée pôur la création de votre compte.</small>
+                </div>
+                <div class="form-group">
+                    <label for="create_password">Mot de passe</label>
+                    <input type="password" class="form-control" id="create_password" name="password" aria-describedby="create_password_help"/>
+                    <small id="create_password_help" class="form-text text-muted">Votre mot de passe doit etre composé d'une minuscule, une majuscule et un nombre, avec au minimum 8 caractères.</small>
+                </div>
+                <div class="form-group">
+                    <label for="create_password_confirm">Confirmation du mot de passe</label>
+                    <input type="password" class="form-control" id="create_password_confirm" name="password_confirm">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Création du compte</button>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-link"
+                            onclick="this.parentElement.parentElement.parentElement.classList.toggle('creation')">
+                        Identification
+                        <svg class="bi bi-chevron-right" width="32" height="32" viewBox="0 0 20 20" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M6.646 3.646a.5.5 0 01.708 0l6 6a.5.5 0 010 .708l-6 6a.5.5 0 01-.708-.708L12.293 10 6.646 4.354a.5.5 0 010-.708z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+{% endblock %}
+{% block javascript %}
+<script src="/javascripts/login.js"></script>
+{% endblock %}

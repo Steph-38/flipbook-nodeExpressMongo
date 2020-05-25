@@ -1,0 +1,25 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+  <main>
+    <div>
+      <h1>{{title}}</h1>
+      <p>Ce site vous permet de visualiser les livres mis à disposition par notre communauté !</p>
+    </div>
+    <div class="books">
+      {% for book in books %}
+        <div class="book">
+          <div class="cover">
+            <img src="{{ book.cover | default('/images/defaultBook.jpg') }}" />
+          </div>
+          <h3 class="justify-content-center">{{ book.name }}</h3>
+          <cite class="text-center mb-3">Publié le {{ book.publishDate | date('d/m/Y') }} par {{ book.publisher }}</cite>
+          <fieldset>
+            <legend style="font-size: 1.2em;font-weight: bold;">Résumé :</legend>
+            <p>{{ book.description }}</p>
+          </fieldset>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+{% endblock %}
