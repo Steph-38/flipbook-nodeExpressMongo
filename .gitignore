@@ -66,5 +66,5 @@ typings/
 uploadedFiles/*.pdf
 yarn.lock
 .idea/*
-public/books/*.*
+public/books/*
 package-lock.json
